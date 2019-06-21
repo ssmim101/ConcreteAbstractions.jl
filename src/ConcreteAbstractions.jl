@@ -10,7 +10,7 @@ const _base_types = Dict{Symbol, Tuple}()
 macro base(typeexpr::Expr)
     # dump(typeexpr)
     # name = :AbstractFoo # TODO: extract type name
-    @assert typeexpr.head == :type
+    @assert typeexpr.head == :struct
     mutable, nameblock, args = typeexpr.args
 
     # extract name and parameters
@@ -24,13 +24,13 @@ macro base(typeexpr::Expr)
     _base_types[name] = params, args
     # @show name
     esc(quote
-        abstract $name
+        abstract type $name end
     end)
 end
 
 macro extend(typeexpr::Expr)
     # dump(typeexpr)
-    @assert typeexpr.head == :type
+    @assert typeexpr.head == :struct
     mutable, nameblock, args = typeexpr.args
     # @show args
 
